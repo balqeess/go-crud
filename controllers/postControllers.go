@@ -34,13 +34,8 @@ func UserCreate(c *gin.Context) {
 		return
 	}
 	
-	// retrun it
-	c.JSON(200, gin.H{
-		"message": user,
-	})
-	
-
-	
+	// Redirect to the userList.html page
+	c.Redirect(http.StatusSeeOther, "/users")
 }
 
 // FETCH ALL POSTS FUNCTION 
