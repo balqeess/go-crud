@@ -1,9 +1,7 @@
 package main
 import (
-	//"net/http"
 
 	"github.com/balqees/go-crud/controllers"
-	//"github.com/balqees/go-crud/data"
 	"github.com/balqees/go-crud/initializers"
 	"github.com/gin-gonic/gin"
 )
