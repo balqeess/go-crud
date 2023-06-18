@@ -21,7 +21,7 @@ func main() {
 	r.GET("/users", controllers.GetUsers)
 	r.PUT("/users/:id", controllers.UserUpdate)
 	r.GET("/users/:id", controllers.GetUserbyID)
-	r.DELETE("/users/:id", controllers.UserDelete)
+	r.DELETE("/users/:id/delete", controllers.UserDelete)
 	r.Run()
 }
 
