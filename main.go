@@ -13,14 +13,17 @@ func init() {
 
 func main() {
 
+	gin.SetMode(gin.DebugMode)
+
+
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*.html")
-	//r.Any("/users/form", controllers.FormHandler) // Handles both GET and POST requests
 	r.GET("/users/form", controllers.ShowUserForm)
+	r.GET("/users", controllers.ShowUserList)
 	r.POST("/users", controllers.UserCreate)
-	r.GET("/users", controllers.GetUsers)
-	r.PUT("/users/:id/Update", controllers.UserUpdate)
-	r.GET("/users/:id", controllers.GetUserbyID)
-	r.DELETE("/users/:id/delete", controllers.UserDelete)
+	r.GET("/users/:id/update", controllers.ShowUserUpdateForm)
+	r.PUT("/users/:id/update", controllers.UserUpdate)
+	r.POST("/users/:id/delete", controllers.UserDelete)
+
 	r.Run()
 }

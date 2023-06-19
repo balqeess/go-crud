@@ -1,0 +1,32 @@
+
+{{ define "content" }}
+<div class="form-container">
+    <h2>Update User</h2>
+    <form action="/users/{{ .User.id }}/update" method="PUT" class="user-form">
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" id="firstName" name="FirstName" class="form-control" value="{{ .User.FirstName }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="lastName" name="LastName" class="form-control" value="{{ .User.LastName }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="Email" class="form-control" value="{{ .User.Email }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="number_of_tickets">Number of Tickets</label>
+            <input type="number" id="number_of_tickets" name="NumberOfTickets" class="form-control" value="{{ .User.NumberOfTickets }}" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </form>
+</div>
+{{ end }}
+{{ template "base.html" . }}

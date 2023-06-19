@@ -4,18 +4,7 @@
     <title>{{ .title }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        /* Custom styles for the toggle button */
-        .toggle-btn {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-        }
-        .toggle-btn i {
-            font-size: 1.5rem;
-        }
-    </style>
+   
 </head>
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -37,22 +26,4 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     
-    <script>
-        const toggle = document.getElementById('toggleDark');
-        const body = document.querySelector('body');
-
-        toggle.addEventListener('click', function(){
-            this.classList.toggle('bi-moon');
-            if(this.classList.contains('bi-moon')){
-                body.style.background = 'white';
-                body.style.color = 'black';
-                body.style.transition = '2s';
-            }else{
-                body.style.background = 'black';
-                body.style.color = 'white';
-                body.style.transition = '2s';
-            }
-        });
-    </script>
-</body>
-</html>
+   
