@@ -15,13 +15,15 @@ func main() {
 
 	gin.SetMode(gin.DebugMode)
 
+	routes := gin.Default()
+	routes.LoadHTMLGlob("templates/*.html")
+	r := routes.Group("/users")
+	r.GET("/form", controllers.ShowUserForm)
+	r.GET("/list", controllers.ShowUserList)
+	r.POST("/", controllers.UserCreate)
+	r.GET("/:id", controllers.ShowUserUpdate)
+	r.POST("/:id/update", controllers.UserUpdate)
+	r.POST("/:id/delete", controllers.UserDelete)
+	routes.Run()
 
-	r := gin.Default()
-	r.LoadHTMLGlob("templates/*.html")
-	r.GET("/users/form", controllers.ShowUserForm)
-	r.GET("/users/list", controllers.ShowUserList)
-	r.POST("/users", controllers.UserCreate)
-	r.POST("/users/:id/delete", controllers.UserDelete)
-
-	r.Run()
 }

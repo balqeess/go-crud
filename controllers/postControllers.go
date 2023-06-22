@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
 func UserCreate(c *gin.Context) {
 	// Bind form data to the UserForm struct
 	var userForm UserForm
@@ -24,8 +25,6 @@ func UserCreate(c *gin.Context) {
 		
 	}
 
-	
-
 	// Create the user in the database
 	result := initializers.DB.Create(&user)
 	if result.Error != nil {
@@ -38,30 +37,59 @@ func UserCreate(c *gin.Context) {
 }
 
 
-
-func GetUsers(c *gin.Context) gin.H {
-	// Get the users
+ func GetUsers() []models.User {
+	// Retrieve the users from the database 
 	var users []models.User
 	initializers.DB.Find(&users)
-
-	return gin.H{
-		"users": users,
-	}
+	return users
 }
 
 
-
-func GetUserByID(c *gin.Context) models.User{
-	// get id off url
-	id := c.Param("id")
-	// get the posts (find the posts)
+func GetUserByID(userID string) *models.User {
+	// Retrieve the user from the database based on the provided ID
 	var user models.User
-	initializers.DB.First(&user, id)
-	// respond with them
-	return user
+	if err := initializers.DB.First(&user, userID).Error; err != nil {
+		// Handle the error if the user is not found or any other database error occurs
+		return nil
+	}
+	return &user
 }
 
 
+func UserUpdate(c *gin.Context) {
+	//get id of url
+	ID := c.Param("id")
+	// get the user by the given id from the url
+	user := GetUserByID(ID)
+	if user == nil {
+		// Handle the case where the user is not found
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	// Parse and bind the form data to the UserUpdateForm struct
+	var form UserUpdateForm
+	if err := c.ShouldBind(&form); err != nil {
+		// Handle the error if form data validation fails
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Update the user with the new details
+	user.FirstName = form.FirstName
+	user.LastName = form.LastName
+	user.Email = form.Email
+
+	// Save the updated user to the database
+	if err := initializers.DB.Save(user).Error; err != nil {
+		// Handle the error if the user update fails
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user"})
+		return
+	}
+
+	// Redirect to the user details page
+	c.Redirect(http.StatusSeeOther, "/users/list")
+}
 
 
 func UserDelete(c *gin.Context) {
@@ -72,3 +100,4 @@ func UserDelete(c *gin.Context) {
 	// respond
 	c.Redirect(http.StatusFound, "/users/list")
 }
+
