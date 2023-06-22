@@ -1,5 +1,4 @@
-<!-- form.html -->
-{{ define "content" }}
+
 <div class="form-container">
     <h2>Submit User Form</h2>
     <form action="/users" method="POST" class="user-form">
@@ -19,16 +18,13 @@
         </div>
 
         <div class="form-group">
-            <label for="number_of_tickets">Number of Tickets</label>
-            <input type="number" id="number_of_tickets" name="NumberOfTickets" class="form-control" required>
-        </div>
-
-        <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 </div>
-{{ end }}
 
-{{ template "base.html" . }}
+
+
+
+
 
