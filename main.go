@@ -19,10 +19,8 @@ func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*.html")
 	r.GET("/users/form", controllers.ShowUserForm)
-	r.GET("/users", controllers.ShowUserList)
+	r.GET("/users/list", controllers.ShowUserList)
 	r.POST("/users", controllers.UserCreate)
-	r.GET("/users/:id/update", controllers.ShowUserUpdateForm)
-	r.PUT("/users/:id/update", controllers.UserUpdate)
 	r.POST("/users/:id/delete", controllers.UserDelete)
 
 	r.Run()

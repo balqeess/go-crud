@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/balqees/go-crud/initializers"
@@ -22,8 +21,10 @@ func UserCreate(c *gin.Context) {
 		FirstName:       userForm.FirstName,
 		LastName:        userForm.LastName,
 		Email:           userForm.Email,
-		NumberOfTickets: userForm.NumberOfTickets,
+		
 	}
+
+	
 
 	// Create the user in the database
 	result := initializers.DB.Create(&user)
@@ -31,17 +32,12 @@ func UserCreate(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}
-
+	
 	// Redirect to the userList.html page
-	c.Redirect(http.StatusFound, "/users")
+	c.Redirect(http.StatusSeeOther, "/users/list")
 }
 
-func ShowUserForm(c *gin.Context) {
-	fmt.Println("ShowUserForm controller")
-	c.HTML(http.StatusOK, "form.html", gin.H{
-		"title": "Submit User Form",
-	})
-}
+
 
 func GetUsers(c *gin.Context) gin.H {
 	// Get the users
@@ -55,15 +51,6 @@ func GetUsers(c *gin.Context) gin.H {
 
 
 
-
-func ShowUserList(c *gin.Context) {
-	// Get the users
-	users := GetUsers(c)
-	fmt.Println("ShowUserList controller") // Add this debug output
-	// Render the userList.html template with the users
-	c.HTML(http.StatusOK, "userList.html", users)
-}
-
 func GetUserByID(c *gin.Context) models.User{
 	// get id off url
 	id := c.Param("id")
@@ -74,45 +61,6 @@ func GetUserByID(c *gin.Context) models.User{
 	return user
 }
 
-// ShowUserUpdateForm renders the update form for a specific user
-func ShowUserUpdateForm(c *gin.Context) {
-	user := GetUserByID(c)
-	c.HTML(http.StatusOK, "updateUser.html", gin.H{"user": user})
-}
-
-// UPDATE A POST 
-func UserUpdate(c *gin.Context){
-	// get id off url 
-	id := c.Param("id")
-
-	// get data off req body
-	var user struct {
-		FirstName       string 
-		LastName        string 
-		Email           string 
-		NumberOfTickets	int
-	}
-	c.Bind(&user)
-
-	// find the post we are updating(same as getting it )
-	var post models.User
-	initializers.DB.First(&post, id)
-
-	// Update it
-	initializers.DB.Model(&post).Updates(models.User{
-		FirstName: user.FirstName, LastName: user.LastName, Email: user.Email, NumberOfTickets: user.NumberOfTickets,
-	})
-
-	//  Respond with it 
-	c.JSON(200, gin.H{
-		"post": post,
-	})
-
-
-
-	// Redirect back to the user list after the update
-	c.Redirect(http.StatusFound, "/users")
-}
 
 
 
@@ -122,5 +70,5 @@ func UserDelete(c *gin.Context) {
 	// Delete the posts
 	initializers.DB.Delete(&models.User{}, id)
 	// respond
-	c.Redirect(http.StatusFound, "/users")
+	c.Redirect(http.StatusFound, "/users/list")
 }
