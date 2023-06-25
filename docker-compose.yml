@@ -1,32 +1,12 @@
 version: '3'
 services:
-  app:
-    build:
-      context: .
-    ports:
-      - 3000:3000
-    env_file:
-      - .env
-    depends_on:
-      - db
-    networks:
-      - app-network
-  db:
-    image: postgres
-    restart: always
+  postgres-db:
+    build: .
+    volumes:
+     - ./data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=8aLJab
-      - POSTGRES_DB=rihalDB
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - app-network
-
-networks:
-  app-network:
-
-volumes:
-  postgres-data:
+      - POSTGRES_DB=goDB
