@@ -10,12 +10,9 @@ func init() {
 	initializers.ConnectToDB()
 }
 
-
-
 func main() {
 	r := routers.SetupRouter()
 
 	// Run the server
 	r.Run()
 }
-

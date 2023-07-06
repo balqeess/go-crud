@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,7 @@ type UserForm struct {
 	FirstName string `form:"FirstName" binding:"required"`
 	LastName  string `form:"LastName" binding:"required"`
 	Email     string `form:"Email" binding:"required,email"`
+	DateOfBirth time.Time `form:"DateOfBirth" binding:"required" time_format:"2006-01-02"`
 }
 
 
@@ -20,6 +22,7 @@ type UserUpdateForm struct {
 	FirstName string `form:"FirstName" binding:"required"`
 	LastName  string `form:"LastName" binding:"required"`
 	Email     string `form:"Email" binding:"required,email"`
+	DateOfBirth time.Time `form:"DateOfBirth" binding:"required" time_format:"2006-01-02"`
 }
 
 
@@ -34,10 +37,25 @@ func ShowUserForm(c *gin.Context) {
 }
 
 
-// User List
+
 func ShowUserList(c *gin.Context) {
 	// Get the users
 	users := GetUsers()
+	totalUsers := len(users)
+
+	// Calculate age and sum of ages for each user
+	var totalAge int
+	for i := range users {
+		age := CalculateAge(users[i].DateOfBirth)
+		users[i].Age = age
+		totalAge += age
+	}
+
+	// Calculate the average age
+	var averageAge int
+	if totalUsers > 0 {
+		averageAge = (totalAge) / (totalUsers)
+	}
 
 	// passes users to generate the HTML content for the user list.
 	userListHTML := RenderUserListHTML(users)
@@ -47,6 +65,8 @@ func ShowUserList(c *gin.Context) {
 		"title":   "User List",
 		"content": template.HTML(userListHTML),
 		"users":   users,
+		"totalUsers": totalUsers,
+		"averageAge": averageAge,
 	})
 }
 
@@ -68,6 +88,8 @@ func ShowUserUpdate(c *gin.Context) {
         "{{ .user.FirstName }}": user.FirstName,
         "{{ .user.LastName }}":  user.LastName,
         "{{ .user.Email }}":     user.Email,
+		"{{ .user.DateOfBirth }}": user.DateOfBirth.Format("2006-01-02"),
+
     }
 
     renderedHTML := updateHTML
