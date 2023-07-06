@@ -65,22 +65,21 @@ func TestUserCreate(t *testing.T) {
 	initializers.DB.Delete(&user)
 
 }
+
 func TestGetUsers(t *testing.T) {
 	// Create a few test users to be stored in the database
 	testUsers := []models.User{
 		{
-			FirstName: "Ahmed",
-			LastName:  "AlBarwani",
-			Email:     "Ahmed@gmail.com",
+			FirstName:   "Ahmed",
+			LastName:    "AlBarwani",
+			Email:       "Ahmed@gmail.com",
 			DateOfBirth: time.Date(1990, time.January, 1, 0, 0, 0, 0, time.UTC),
 		},
-		
 		{
-			FirstName: "Yusra",
-			LastName:  "AlHarthi",
-			Email:     "Yusra@gmail.com",
+			FirstName:   "Yusra",
+			LastName:    "AlHarthi",
+			Email:       "Yusra@gmail.com",
 			DateOfBirth: time.Date(1990, time.January, 1, 0, 0, 0, 0, time.UTC),
-		
 		},
 	}
 
@@ -94,12 +93,31 @@ func TestGetUsers(t *testing.T) {
 
 	// Assert that the retrieved users include the test users
 	for _, user := range testUsers {
-		assert.Contains(t, allUsers, user)
-		// Delete the user from the database
-		initializers.DB.Delete(&user)
+	// adding this addition step because this test case retrieves multiple users from the database
+	// and compares them with the test users  created.
+	// The issue lies in the comparison of the retrieved users with the test users.
+	// that will include created deleted and updated at for each user which differs
+
+
+		found := false
+		for _, retrievedUser := range allUsers {
+			if retrievedUser.FirstName == user.FirstName &&
+				retrievedUser.LastName == user.LastName &&
+				retrievedUser.Email == user.Email &&
+				retrievedUser.DateOfBirth.Equal(user.DateOfBirth) {
+				found = true
+				break
+			}
+		}
+		assert.True(t, found, "Expected user not retrieved: %+v", user)
 	}
-	
+
+	// Clean up by deleting the test users from the database
+	for i := range testUsers {
+		initializers.DB.Delete(&testUsers[i])
+	}
 }
+
 
 
 func TestGetUserByID(t *testing.T) {
