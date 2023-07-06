@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/balqees/go-crud/controllers"
 	"github.com/balqees/go-crud/initializers"
@@ -35,6 +36,7 @@ func TestUserCreate(t *testing.T) {
 		"FirstName": {"Ahmed"},
 		"LastName":  {"AlBarwani"},
 		"Email":     {"Ahmed@gmail.com"},
+		"DateOfBirth": {"1990-01-01"},
 	}
 	req, _ := http.NewRequest("POST", "/users", strings.NewReader(formData.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -57,6 +59,8 @@ func TestUserCreate(t *testing.T) {
 	assert.Equal(t, "Ahmed", user.FirstName)
 	assert.Equal(t, "AlBarwani", user.LastName)
 	assert.Equal(t, "Ahmed@gmail.com", user.Email)
+	assert.Equal(t, time.Date(1989, time.December, 31, 20, 0, 0, 0, time.UTC), user.DateOfBirth.UTC())
+
 
 	initializers.DB.Delete(&user)
 
@@ -68,11 +72,15 @@ func TestGetUsers(t *testing.T) {
 			FirstName: "Ahmed",
 			LastName:  "AlBarwani",
 			Email:     "Ahmed@gmail.com",
+			DateOfBirth: time.Date(1990, time.January, 1, 0, 0, 0, 0, time.UTC),
 		},
+		
 		{
 			FirstName: "Yusra",
 			LastName:  "AlHarthi",
 			Email:     "Yusra@gmail.com",
+			DateOfBirth: time.Date(1990, time.January, 1, 0, 0, 0, 0, time.UTC),
+		
 		},
 	}
 
@@ -100,6 +108,7 @@ func TestGetUserByID(t *testing.T) {
 		FirstName: "Ahmed",
 		LastName:  "AlBarwani",
 		Email:     "Ahmed@gmail.com",
+		DateOfBirth: time.Date(1990, time.January, 1, 0, 0, 0, 0, time.UTC),
 	}
 
 	// Create the user in the database
@@ -110,6 +119,8 @@ func TestGetUserByID(t *testing.T) {
 	assert.Equal(t, user.FirstName, foundUser.FirstName)
 	assert.Equal(t, user.LastName, foundUser.LastName)
 	assert.Equal(t, user.Email, foundUser.Email)
+	assert.Equal(t, user.DateOfBirth.UTC(), foundUser.DateOfBirth.UTC())
+	
 	// delete the user
 	initializers.DB.Delete(&user)
 }
@@ -126,6 +137,7 @@ func TestUserUpdate(t *testing.T) {
 		FirstName: "Ahmed",
 		LastName:  "AlBarwani",
 		Email:     "Ahmed@gmail.com",
+		DateOfBirth: time.Date(1990, time.January, 1, 0, 0, 0, 0, time.UTC),
 	}
 	// Create the user in the database
 	initializers.DB.Create(&user)
@@ -134,6 +146,7 @@ func TestUserUpdate(t *testing.T) {
 	FirstName :"Nasser",
 	LastName :"AlJabri",
 	Email :"Naseer@gmail.com",
+	DateOfBirth: time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC),
 	}
 
 	// Save the updated user to the database
@@ -163,6 +176,7 @@ func TestUserUpdate(t *testing.T) {
 	assert.Equal(t, updatedUser.FirstName, updatedUserFromDB.FirstName)
 	assert.Equal(t, updatedUser.LastName, updatedUserFromDB.LastName)
 	assert.Equal(t, updatedUser.Email, updatedUserFromDB.Email)
+	assert.Equal(t, updatedUser.DateOfBirth.UTC(), updatedUserFromDB.DateOfBirth.UTC())
 	
 	// Save the updated user to the database
 	initializers.DB.Save(updatedUserFromDB)
