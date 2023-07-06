@@ -96,6 +96,7 @@ func UserUpdate(c *gin.Context) {
 	user.FirstName = form.FirstName
 	user.LastName = form.LastName
 	user.Email = form.Email
+	user.DateOfBirth = form.DateOfBirth
 
 	// Save the updated user to the database
 	if err := initializers.DB.Save(user).Error; err != nil {

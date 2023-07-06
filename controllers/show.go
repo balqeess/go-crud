@@ -77,6 +77,8 @@ func ShowUserUpdate(c *gin.Context) {
         "{{ .user.FirstName }}": user.FirstName,
         "{{ .user.LastName }}":  user.LastName,
         "{{ .user.Email }}":     user.Email,
+		"{{ .user.DateOfBirth }}": user.DateOfBirth.Format("2006-01-02"),
+
     }
 
     renderedHTML := updateHTML
