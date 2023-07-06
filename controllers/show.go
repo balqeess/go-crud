@@ -41,11 +41,20 @@ func ShowUserForm(c *gin.Context) {
 func ShowUserList(c *gin.Context) {
 	// Get the users
 	users := GetUsers()
+	totalUsers := len(users)
 
-	// Calculate age for each user
+	// Calculate age and sum of ages for each user
+	var totalAge int
 	for i := range users {
 		age := CalculateAge(users[i].DateOfBirth)
 		users[i].Age = age
+		totalAge += age
+	}
+
+	// Calculate the average age
+	var averageAge int
+	if totalUsers > 0 {
+		averageAge = (totalAge) / (totalUsers)
 	}
 
 	// passes users to generate the HTML content for the user list.
@@ -56,6 +65,8 @@ func ShowUserList(c *gin.Context) {
 		"title":   "User List",
 		"content": template.HTML(userListHTML),
 		"users":   users,
+		"totalUsers": totalUsers,
+		"averageAge": averageAge,
 	})
 }
 
