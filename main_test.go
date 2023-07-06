@@ -224,5 +224,11 @@ func TestUserDelete(t *testing.T) {
 	assert.Equal(t, "/users/list", w.Header().Get("Location"))
 }
 
+func TestCalculateAge(t *testing.T) {
+	dateOfBirth := time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC)
+	expectedAge := 23
 
+	age := controllers.CalculateAge(dateOfBirth)
 
+	assert.Equal(t, expectedAge, age)
+}
