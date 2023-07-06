@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,7 @@ type UserForm struct {
 	FirstName string `form:"FirstName" binding:"required"`
 	LastName  string `form:"LastName" binding:"required"`
 	Email     string `form:"Email" binding:"required,email"`
+	DateOfBirth time.Time `form:"DateOfBirth" binding:"required" time_format:"2006-01-02"`
 }
 
 
@@ -20,6 +22,7 @@ type UserUpdateForm struct {
 	FirstName string `form:"FirstName" binding:"required"`
 	LastName  string `form:"LastName" binding:"required"`
 	Email     string `form:"Email" binding:"required,email"`
+	DateOfBirth time.Time `form:"DateOfBirth" binding:"required" time_format:"2006-01-02"`
 }
 
 
@@ -34,10 +37,16 @@ func ShowUserForm(c *gin.Context) {
 }
 
 
-// User List
+
 func ShowUserList(c *gin.Context) {
 	// Get the users
 	users := GetUsers()
+
+	// Calculate age for each user
+	for i := range users {
+		age := CalculateAge(users[i].DateOfBirth)
+		users[i].Age = age
+	}
 
 	// passes users to generate the HTML content for the user list.
 	userListHTML := RenderUserListHTML(users)

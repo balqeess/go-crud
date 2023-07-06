@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/balqees/go-crud/initializers"
 	"github.com/balqees/go-crud/models"
@@ -22,6 +23,7 @@ func UserCreate(c *gin.Context) {
 		FirstName:       userForm.FirstName,
 		LastName:        userForm.LastName,
 		Email:           userForm.Email,
+		DateOfBirth: 	 userForm.DateOfBirth,
 		
 	}
 
@@ -32,10 +34,25 @@ func UserCreate(c *gin.Context) {
 		return
 	}
 	
+
 	// Redirect to the userList.html page
 	c.Redirect(http.StatusSeeOther, "/users/list")
 }
 
+
+// Function to calculate age based on the date of birth
+func CalculateAge(dateOfBirth time.Time) int {
+	now := time.Now()
+	age := now.Year() - dateOfBirth.Year()
+
+	//If the current day of the year is less than the user's day of the year,
+	//  we decrement the age.
+	if now.YearDay() < dateOfBirth.YearDay() {
+		age--
+	}
+
+	return age
+}
 
  func GetUsers() []models.User {
 	// Retrieve the users from the database 
