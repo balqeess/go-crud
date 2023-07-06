@@ -1,12 +1,32 @@
-version: '3'
+version: "3"
 services:
-  postgres-db:
-    build: .
-    volumes:
-     - ./data:/var/lib/postgresql/data
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=testuser
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     ports:
       - "5432:5432"
+  # the api service will serve all API requests to our go simple
+  api:
+    # for this service we should build the image from the golang source(dockerfile)
+    build:
+      # the dot means the current root project
+      context: .
+      dockerfile: Dockerfile
+    # we publish the port to the host machine  
+    # so that we can call the simple go API from outside the contanier 
+    ports:
+      - "3000:3000"
+    # we tell the api service how to connect to the postgres service
+    # we replaced localhost with the name of the postgres serivce since they
+    # are in the same network
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=8aLJab
-      - POSTGRES_DB=goDB
+      - DB_URL=postgresql://postgres:postgres@postgres:5432/testuser?sslmode=disable 
+    depends_on:
+      - postgres
+    entrypoint: ["/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh"]
+    command: ["/app/main"]
+    
+     
