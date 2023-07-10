@@ -65,7 +65,7 @@ To set up the development environment:
 ## Testing
 To run the tests, use the following command:
 ```shell
-go test ./...
+go test .
 ```
 ## Database
 The GO-CRUD web application uses PostgreSQL as the database system.
