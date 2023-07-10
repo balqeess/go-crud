@@ -13,7 +13,7 @@ Prerequisites
 - PostgreSQL: [Download PostgreSQL](https://www.postgresql.org/download/)
 - PgAdmin 4 or Beekeeper:
 ([Download PgAdmin 4](https://www.pgadmin.org/download/) /
-[Download Beekeeper](https://www.beekeeperstudio.io/get)
+[Download Beekeeper](https://www.beekeeperstudio.io/get))
 
 
                                        
