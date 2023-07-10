@@ -11,9 +11,9 @@ Prerequisites
 - Go (version 1.20.5): [Download Go](https://golang.org/dl/)
 - Docker: [Download Docker](https://www.docker.com/)
 - PostgreSQL: [Download PostgreSQL](https://www.postgresql.org/download/)
-- PgAdmin 4 or Beekeeper:[Download PgAdmin 4](https://www.pgadmin.org/download/)
-- or
--  [Download Beekeeper([https://www.pgadmin.org/download/](https://www.beekeeperstudio.io/get)) 
+- PgAdmin 4 or Beekeeper:
+([Download PgAdmin 4](https://www.pgadmin.org/download/) /
+[Download Beekeeper([https://www.pgadmin.org/download/](https://www.beekeeperstudio.io/get)) 
 
 
                                        
