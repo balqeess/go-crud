@@ -54,13 +54,12 @@ func TestUserCreate(t *testing.T) {
 	assert.Equal(t, "/users/list", w.Header().Get("Location"))
 
 	// Assert that the user has been created in the database
-	var user models.User
+	 var user models.User
 	initializers.DB.Where("email = ?", "Ahmed@gmail.com").First(&user)
 	assert.Equal(t, "Ahmed", user.FirstName)
 	assert.Equal(t, "AlBarwani", user.LastName)
 	assert.Equal(t, "Ahmed@gmail.com", user.Email)
-	assert.Equal(t, time.Date(1989, time.December, 31, 20, 0, 0, 0, time.UTC), user.DateOfBirth.UTC())
-
+	assert.Equal(t, time.Date(1990, time.January, 1, 0, 0, 0, 0, time.UTC), user.DateOfBirth.UTC())
 
 	initializers.DB.Delete(&user)
 

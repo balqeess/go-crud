@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/balqees/go-crud/initializers"
 	"github.com/balqees/go-crud/routers"
+	"github.com/balqees/go-crud/seed"
 )
 
 func init() {
@@ -11,6 +12,7 @@ func init() {
 }
 
 func main() {
+	seed.SeedUsers(initializers.DB)
 	r := routers.SetupRouter()
 
 	// Run the server
